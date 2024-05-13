@@ -23,8 +23,8 @@
 hs_err_pid*
 replay_pid*
 
-
 .gradle
+GameLauncherCode/.gradle
 GameLauncherCode/build/
 !GameLauncherCode/gradle/wrapper/gradle-wrapper.jar
 !GameLauncherCode/**/src/main/**/build/

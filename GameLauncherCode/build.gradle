@@ -17,3 +17,8 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+task run(type: JavaExec) {
+    main = 'edu.handong.csee.jh.Main'
+    classpath = sourceSets.main.runtimeClasspath
+}

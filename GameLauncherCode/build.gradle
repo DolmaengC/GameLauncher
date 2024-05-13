@@ -19,6 +19,6 @@ test {
 }
 
 task run(type: JavaExec) {
-    main = 'edu.handong.csee.jh.Main'
+    main = 'edu.handong.csee.jh.Launcher'
     classpath = sourceSets.main.runtimeClasspath
 }

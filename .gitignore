@@ -22,3 +22,47 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+
+.gradle
+GameLauncherCode/build/
+!GameLauncherCode/gradle/wrapper/gradle-wrapper.jar
+!GameLauncherCode/**/src/main/**/build/
+!GameLauncherCode/**/src/test/**/build/
+
+### IntelliJ IDEA ###
+GameLauncherCode/.idea/modules.xml
+GameLauncherCode/.idea/jarRepositories.xml
+GameLauncherCode/.idea/compiler.xml
+GameLauncherCode/.idea/libraries/
+GameLauncherCode/*.iws
+GameLauncherCode/*.iml
+GameLauncherCode/*.ipr
+GameLauncherCode/out/
+!GameLauncherCode/**/src/main/**/out/
+!GameLauncherCode/**/src/test/**/out/
+
+### Eclipse ###
+GameLauncherCode/.apt_generated
+GameLauncherCode/.classpath
+GameLauncherCode/.factorypath
+GameLauncherCode/.project
+GameLauncherCode/.settings
+GameLauncherCode/.springBeans
+GameLauncherCode/.sts4-cache
+GameLauncherCode/bin/
+!GameLauncherCode/**/src/main/**/bin/
+!GameLauncherCode/**/src/test/**/bin/
+
+### NetBeans ###
+GameLauncherCode/nbproject/private/
+GameLauncherCode/nbbuild/
+GameLauncherCode/dist/
+GameLauncherCode/nbdist/
+GameLauncherCode/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store

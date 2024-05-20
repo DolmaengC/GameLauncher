@@ -163,8 +163,8 @@ public class Game2048 extends JFrame implements KeyListener {
     private boolean moveLeft() {
         boolean moved = false;
         for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                if (board[i][j] == 0 && j != BOARD_SIZE-1) {
+            for (int j = 0; j < BOARD_SIZE-1; j++) {
+                if (board[i][j] == 0) {
                     for (int k = j+1; k < BOARD_SIZE; k++) {
                         if (moveBtoA(i,j,i,k)) {
                             moved = true;
@@ -172,12 +172,12 @@ public class Game2048 extends JFrame implements KeyListener {
                         }
                     }
                 }
-                if (j == BOARD_SIZE -1) continue;
                 for (int k = j + 1; k < BOARD_SIZE; k++) {
-                    if (checkBisNotZeroAndCombine(i, j, i, k)) {
+                    if (board[i][k] == 0) continue;
+                    if (checkIsEqualAndCombine(i, j, i, k)) {
                         moved = true;
-                        break;
                     }
+                    break;
                 }
             }
         }
@@ -198,10 +198,12 @@ public class Game2048 extends JFrame implements KeyListener {
                 }
                 if (j == 0) continue;
                 for (int k = j - 1; k >= 0; k--) {
-                    if (checkBisNotZeroAndCombine(i, j, i, k)) {
+                    if (board[i][k] == 0) continue;
+                    if (checkIsEqualAndCombine(i, j, i, k)) {
                         moved = true;
-                        break;
+
                     }
+                    break;
                 }
             }
         }
@@ -221,10 +223,12 @@ public class Game2048 extends JFrame implements KeyListener {
                 }
                 if (j == BOARD_SIZE -1) continue;
                 for (int k = j + 1; k < BOARD_SIZE; k++) {
-                    if (checkBisNotZeroAndCombine(j, i, k, i)) {
+                    if (board[k][i] == 0) continue;
+                    if (checkIsEqualAndCombine(j, i, k, i)) {
                         moved = true;
-                        break;
+
                     }
+                    break;
                 }
             }
         }
@@ -244,10 +248,11 @@ public class Game2048 extends JFrame implements KeyListener {
                 }
                 if (j == 0) continue;
                 for (int k = j - 1; k >= 0; k--) {
-                    if (checkBisNotZeroAndCombine(j, i, k, i)) {
+                    if (board[k][i] == 0) continue;
+                    if (checkIsEqualAndCombine(j, i, k, i)) {
                         moved = true;
-                        break;
                     }
+                    break;
                 }
             }
         }
@@ -263,9 +268,7 @@ public class Game2048 extends JFrame implements KeyListener {
         return true;
     }
 
-    private boolean checkBisNotZeroAndCombine(int a_i, int a_j, int b_i, int b_j) {
-        if (board[b_i][b_j] == 0) return false;
-
+    private boolean checkIsEqualAndCombine(int a_i, int a_j, int b_i, int b_j) {
         if (board[a_i][a_j] == board[b_i][b_j]) {
             board[a_i][a_j] *= 2;
             board[b_i][b_j] = 0;
@@ -291,10 +294,11 @@ public class Game2048 extends JFrame implements KeyListener {
 
         // 빈 버튼이 있을 때만 2로 만듭니다.
         if (!emptyCells.isEmpty()) {
-            // 빈 버튼 중 하나를 랜덤하게 선택하여 2로 설정
+            // 빈 버튼 중 하나를 랜덤하게 선택하여 2 또는 4로 설정
             Point randomPoint = emptyCells.get(random.nextInt(emptyCells.size()));
-            board[randomPoint.x][randomPoint.y] = 2;
-            buttons[randomPoint.x][randomPoint.y].setText("2");
+            int value = random.nextBoolean() ? 2 : 4;
+            board[randomPoint.x][randomPoint.y] = value;
+            buttons[randomPoint.x][randomPoint.y].setText(Integer.toString(value));
         }
     }
 }

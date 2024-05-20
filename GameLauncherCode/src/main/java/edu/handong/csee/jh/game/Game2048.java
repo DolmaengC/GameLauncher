@@ -1,4 +1,4 @@
-package edu.handong.csee.jh.game.game_2048;
+package edu.handong.csee.jh.game;
 
 import edu.handong.csee.jh.Launcher;
 

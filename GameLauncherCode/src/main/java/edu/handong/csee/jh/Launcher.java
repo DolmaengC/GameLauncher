@@ -1,6 +1,7 @@
 package edu.handong.csee.jh;
 
-import edu.handong.csee.jh.game.game_2048.Game2048;
+import edu.handong.csee.jh.game.Game2048;
+import edu.handong.csee.jh.game.Omok;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,7 +45,11 @@ public class Launcher extends JFrame implements ActionListener {
         switch (command) {
             case "오목":
                 JOptionPane.showMessageDialog(this, "오목 게임을 시작합니다.");
-                // 여기에 오목 게임 실행하는 코드 추가
+                setVisible(false);
+                SwingUtilities.invokeLater(() -> {
+                    Omok game = new Omok(this);
+                    game.setVisible(true);
+                });
                 break;
             case "2048":
                 JOptionPane.showMessageDialog(this, "2048 게임을 시작합니다.");

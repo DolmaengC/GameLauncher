@@ -84,7 +84,7 @@ public class Launcher extends JFrame implements ActionListener {
             case "채팅":
                 JOptionPane.showMessageDialog(this, "채팅 클라이언트를 시작합니다.");
                 SwingUtilities.invokeLater(() -> {
-                    ChatClient chatClient = new ChatClient(settings.getNickname());
+                    ChatClient chatClient = new ChatClient(settings.getNickname(), settings.getServerAddress());
                     chatClient.setLauncher(this);
                 });
                 break;

@@ -16,7 +16,7 @@ public class ChatClient {
     private String nickname;
     private Launcher launcher;
 
-    public ChatClient(String nickname) {
+    public ChatClient(String nickname, String serverAddress) {
         this.nickname = nickname;
 
         JFrame frame = new JFrame("Chat Client");
@@ -65,7 +65,6 @@ public class ChatClient {
 
         frame.setVisible(true);
 
-        String serverAddress = "172.18.153.99";  // 서버 IP 주소
         int serverPort = 12345;  // 서버 포트 번호
 
         try {

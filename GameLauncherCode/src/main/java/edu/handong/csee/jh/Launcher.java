@@ -16,6 +16,11 @@ public class Launcher extends JFrame implements ActionListener {
 
         Container contentPane = getContentPane(); // 프레임에서 컨텐트팬 받아오기
         contentPane.setLayout(null);
+        // "Chat Client" 버튼 생성
+        JButton chatClientButton = new JButton("Chat Client");
+        chatClientButton.setBounds(200, 200, 100, 50); // 위치와 크기 설정
+        chatClientButton.addActionListener(this); // 이벤트 리스너 등록
+        contentPane.add(chatClientButton); // 프레임에 버튼 추가
 
         // "오목" 버튼 생성
         JButton omokButton = new JButton("오목");
@@ -43,6 +48,13 @@ public class Launcher extends JFrame implements ActionListener {
 
         // 클릭된 버튼에 따라 각각의 동작 수행
         switch (command) {
+            case "Chat Client":
+                JOptionPane.showMessageDialog(this, "채팅 클라이언트를 시작합니다.");
+                setVisible(false);
+                SwingUtilities.invokeLater(() -> {
+                    new ChatClient();
+                });
+                break;
             case "오목":
                 JOptionPane.showMessageDialog(this, "오목 게임을 시작합니다.");
                 setVisible(false);

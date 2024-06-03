@@ -13,10 +13,14 @@ public class ChatClient {
     private PrintWriter out;
     private Socket socket;
     private BufferedReader in;
+    private String nickname;
+    private Launcher launcher;
 
-    public ChatClient() {
+    public ChatClient(String nickname) {
+        this.nickname = nickname;
+
         JFrame frame = new JFrame("Chat Client");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 종료 버튼을 눌렀을 때 프레임만 종료되도록 설정
         frame.setSize(400, 500);
 
         chatArea = new JTextArea();
@@ -49,6 +53,16 @@ public class ChatClient {
             }
         });
 
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                super.windowClosing(windowEvent);
+                if (launcher != null) {
+                    launcher.showLauncher(); // Launcher 창 다시 보이기
+                }
+            }
+        });
+
         frame.setVisible(true);
 
         String serverAddress = "172.18.153.99";  // 서버 IP 주소
@@ -66,10 +80,15 @@ public class ChatClient {
         }
     }
 
+    public void setLauncher(Launcher launcher) {
+        this.launcher = launcher;
+    }
+
     private void sendMessage() {
         String message = inputField.getText();
-        if (!message.trim().isEmpty()) {
-            out.println("Client: " + message);
+        if (!message.trim().
+                isEmpty()) {
+            out.println(nickname + ": " + message);
             inputField.setText("");
         }
     }

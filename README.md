@@ -13,4 +13,10 @@ gradle build
 
 gradle run
 
+## ChatServer
+javac ChatServer.java
 
+java ChatServer
+
+### How to know server address
+use 'ifconfig' command

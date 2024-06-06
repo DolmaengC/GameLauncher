@@ -6,8 +6,11 @@ public class ChatServer {
     private static Set<PrintWriter> clientWriters = new HashSet<>();
 
     public static void main(String[] args) {
-        System.out.println("Chat server started...");
-        try (ServerSocket serverSocket = new ServerSocket(12345)) {
+        try {
+            // 서버 소켓을 생성하고 포트 12345에 바인딩합니다.
+            ServerSocket serverSocket = new ServerSocket(12345);
+            System.out.println("Chat server started at " + InetAddress.getLocalHost().getHostAddress() + " on port 12345..."); // 서버 주소 프린트
+
             while (true) {
                 new ClientHandler(serverSocket.accept()).start();
             }
@@ -58,4 +61,3 @@ public class ChatServer {
         }
     }
 }
-

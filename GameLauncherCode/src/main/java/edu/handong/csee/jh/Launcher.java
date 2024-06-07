@@ -3,6 +3,8 @@ package edu.handong.csee.jh;
 import edu.handong.csee.jh.game.Game2048;
 import edu.handong.csee.jh.game.TicTacToe;
 import edu.handong.csee.jh.game.Omok;
+import edu.handong.csee.jh.game.TicTacToeServer;
+import edu.handong.csee.jh.game.TicTacToeClient;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,58 +16,46 @@ public class Launcher extends JFrame implements ActionListener {
     private Settings settings;
 
     public Launcher() {
-        setTitle("Game Launcher"); // 프레임 제목 설정
+        setTitle("Game Launcher");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        setSize(600, 400); // 프레임 크기 설정
-
-
+        setSize(600, 400);
 
         settings = new Settings(this);
 
-
-        Container contentPane = getContentPane(); // 프레임에서 컨텐트팬 받아오기
+        Container contentPane = getContentPane();
         contentPane.setLayout(null);
 
-        // 닉네임 표시 라벨 생성
         nicknameLabel = new JLabel();
-        nicknameLabel.setBounds(10, 10, 200, 30); // 위치와 크기 설정
+        nicknameLabel.setBounds(10, 10, 200, 30);
         setNickname();
-        contentPane.add(nicknameLabel); // 프레임에 라벨 추가
+        contentPane.add(nicknameLabel);
 
-        // "오목" 버튼 생성
         JButton omokButton = new JButton("오목");
-        omokButton.setBounds(100, 100, 100, 50); // 위치와 크기 설정
-        omokButton.addActionListener(this); // 이벤트 리스너 등록
-        contentPane.add(omokButton); // 프레임에 버튼 추가
+        omokButton.setBounds(100, 100, 100, 50);
+        omokButton.addActionListener(this);
+        contentPane.add(omokButton);
 
-        // "2048" 버튼 생성
         JButton game2048Button = new JButton("2048");
-        game2048Button.setBounds(250, 100, 100, 50); // 위치와 크기 설정
-        game2048Button.addActionListener(this); // 이벤트 리스너 등록
-        contentPane.add(game2048Button); // 프레임에 버튼 추가
+        game2048Button.setBounds(250, 100, 100, 50);
+        game2048Button.addActionListener(this);
+        contentPane.add(game2048Button);
 
-
-        // "OX" 버튼 생성
         JButton oxButton = new JButton("Tic-Tac-Toe");
-        oxButton.setBounds(400, 100, 100, 50); // 위치와 크기 설정
-        oxButton.addActionListener(this); // 이벤트 리스너 등록
-        contentPane.add(oxButton); // 프레임에 버튼 추가
+        oxButton.setBounds(400, 100, 100, 50);
+        oxButton.addActionListener(this);
+        contentPane.add(oxButton);
 
-        // "설정" 버튼 생성
         JButton settingsButton = new JButton("설정");
-        settingsButton.setBounds(300, 10, 80, 30); // 위치와 크기 설정
-        settingsButton.addActionListener(this); // 이벤트 리스너 등록
-        contentPane.add(settingsButton); // 프레임에 버튼 추가
+        settingsButton.setBounds(300, 10, 80, 30);
+        settingsButton.addActionListener(this);
+        contentPane.add(settingsButton);
 
-        // "채팅" 버튼 생성
         JButton chatClientButton = new JButton("채팅");
-        chatClientButton.setBounds(400, 10, 80, 30); // 위치와 크기 설정
-        chatClientButton.addActionListener(this); // 이벤트 리스너 등록
-        contentPane.add(chatClientButton); // 프레임에 버튼 추가
+        chatClientButton.setBounds(400, 10, 80, 30);
+        chatClientButton.addActionListener(this);
+        contentPane.add(chatClientButton);
 
-
-        setVisible(true); // 화면에 프레임 출력
+        setVisible(true);
     }
 
     public void setNickname() {
@@ -76,23 +66,24 @@ public class Launcher extends JFrame implements ActionListener {
         Launcher launcher = new Launcher();
     }
 
-    // 버튼 클릭 이벤트 처리
     @Override
     public void actionPerformed(ActionEvent e) {
-        String command = e.getActionCommand(); // 클릭된 버튼의 명령어 가져오기
+        String command = e.getActionCommand();
 
-        // 클릭된 버튼에 따라 각각의 동작 수행
         switch (command) {
             case "오목":
                 JOptionPane.showMessageDialog(this, "오목 게임을 시작합니다.");
                 setVisible(false);
-                 Omok game = new Omok(this);
-                 game.setVisible(true);
+                Omok game = new Omok(this);
+                game.setVisible(true);
                 break;
             case "2048":
                 JOptionPane.showMessageDialog(this, "2048 게임을 시작합니다.");
                 setVisible(false);
-                 new Game2048(this); // 2048 게임 객체 생성
+                new Game2048(this);
+                break;
+            case "Tic-Tac-Toe":
+                showTicTacToeOptions();
                 break;
             case "채팅":
                 JOptionPane.showMessageDialog(this, "채팅 클라이언트를 시작합니다.");
@@ -104,16 +95,98 @@ public class Launcher extends JFrame implements ActionListener {
             case "설정":
                 settings.setVisible(true);
                 break;
-            case "Tic-Tac-Toe":
-                JOptionPane.showMessageDialog(this, "Tic-Tac-Toe 게임을 시작합니다.");
-                setVisible(false);
-                SwingUtilities.invokeLater(() -> {
-                    TicTacToe ttt = new TicTacToe(this); // OX 게임 객체 생성
-                    ttt.setVisible(true);
-                });
-                break;
             default:
                 break;
+        }
+    }
+
+    private void showTicTacToeOptions() {
+        JDialog dialog = new JDialog(this, "TicTacToe Options", true);
+        dialog.setLayout(new FlowLayout());
+        dialog.setSize(300, 200);
+
+        JButton singlePlayerButton = new JButton("1인 플레이");
+        singlePlayerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+                JOptionPane.showMessageDialog(Launcher.this, "TicTacToe 1인 플레이를 시작합니다.");
+                setVisible(false);
+                TicTacToe game = new TicTacToe(Launcher.this); // 1인 플레이 모드
+                game.setVisible(true);
+            }
+        });
+
+        JButton createRoomButton = new JButton("방 만들기");
+        createRoomButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+                showCreateRoomDialog();
+            }
+        });
+
+        JButton joinRoomButton = new JButton("방 들어가기");
+        joinRoomButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+                showJoinRoomDialog();
+            }
+        });
+
+        dialog.add(singlePlayerButton);
+        dialog.add(createRoomButton);
+        dialog.add(joinRoomButton);
+
+        dialog.setVisible(true);
+    }
+
+    private void showCreateRoomDialog() {
+        JTextField portField = new JTextField(5);
+
+        JPanel panel = new JPanel(new GridLayout(1, 2));
+        panel.add(new JLabel("포트 번호:"));
+        panel.add(portField);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "서버 포트 번호 입력", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            int port;
+            try {
+                port = Integer.parseInt(portField.getText());
+                new Thread(() -> {
+                    TicTacToeServer server = new TicTacToeServer(port);
+                    server.setVisible(true);
+                }).start();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "유효한 포트 번호를 입력하세요.");
+            }
+        }
+    }
+
+    private void showJoinRoomDialog() {
+        JTextField ipField = new JTextField(15);
+        JTextField portField = new JTextField(5);
+
+        JPanel panel = new JPanel(new GridLayout(2, 2));
+        panel.add(new JLabel("IP 주소:"));
+        panel.add(ipField);
+        panel.add(new JLabel("포트 번호:"));
+        panel.add(portField);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "서버 정보 입력", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            String ipAddress = ipField.getText();
+            int port;
+            try {
+                port = Integer.parseInt(portField.getText());
+                new Thread(() -> {
+                    TicTacToeClient client = new TicTacToeClient(ipAddress, port);
+                    client.setVisible(true);
+                }).start();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "유효한 포트 번호를 입력하세요.");
+            }
         }
     }
 

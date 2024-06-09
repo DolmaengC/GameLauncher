@@ -1,4 +1,4 @@
-package edu.handong.csee.jh;
+package edu.handong.csee.jh.chat;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +14,8 @@ public class ChatClient {
     private Socket socket;
     private BufferedReader in;
     private String nickname;
-    private Launcher launcher;
 
-    public ChatClient(String nickname, String serverAddress) {
+    public ChatClient(String nickname, String serverAddress, int serverPort) {
         this.nickname = nickname;
 
         JFrame frame = new JFrame("Chat Client");
@@ -53,19 +52,7 @@ public class ChatClient {
             }
         });
 
-        frame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                super.windowClosing(windowEvent);
-                if (launcher != null) {
-                    launcher.showLauncher(); // Launcher 창 다시 보이기
-                }
-            }
-        });
-
         frame.setVisible(true);
-
-        int serverPort = 12345;  // 서버 포트 번호
 
         try {
             socket = new Socket(serverAddress, serverPort);
@@ -79,14 +66,9 @@ public class ChatClient {
         }
     }
 
-    public void setLauncher(Launcher launcher) {
-        this.launcher = launcher;
-    }
-
     private void sendMessage() {
         String message = inputField.getText();
-        if (!message.trim().
-                isEmpty()) {
+        if (!message.trim().isEmpty()) {
             out.println(nickname + ": " + message);
             inputField.setText("");
         }
@@ -103,5 +85,9 @@ public class ChatClient {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setVisible(boolean visible) {
+        // 프레임의 가시성을 설정하는 메서드
     }
 }

@@ -1,18 +1,23 @@
 package edu.handong.csee.jh;
 
+import edu.handong.csee.jh.chat.ChatClient;
+import edu.handong.csee.jh.chat.ChatServer;
 import edu.handong.csee.jh.game.Game2048;
-import edu.handong.csee.jh.game.TicTacToe;
 import edu.handong.csee.jh.game.Omok;
-import edu.handong.csee.jh.game.TicTacToeServer;
+import edu.handong.csee.jh.game.TicTacToe;
 import edu.handong.csee.jh.game.TicTacToeClient;
+import edu.handong.csee.jh.game.TicTacToeServer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class Launcher extends JFrame implements ActionListener {
     private JLabel nicknameLabel;
+    private JLabel chatServerInfoLabel; // 채팅 서버 정보 라벨 추가
     private Settings settings;
 
     public Launcher() {
@@ -29,6 +34,10 @@ public class Launcher extends JFrame implements ActionListener {
         nicknameLabel.setBounds(10, 10, 200, 30);
         setNickname();
         contentPane.add(nicknameLabel);
+
+        chatServerInfoLabel = new JLabel(); // 채팅 서버 정보 라벨 초기화
+        chatServerInfoLabel.setBounds(10, 40, 400, 30);
+        contentPane.add(chatServerInfoLabel);
 
         JButton omokButton = new JButton("오목");
         omokButton.setBounds(100, 100, 100, 50);
@@ -54,6 +63,11 @@ public class Launcher extends JFrame implements ActionListener {
         chatClientButton.setBounds(400, 10, 80, 30);
         chatClientButton.addActionListener(this);
         contentPane.add(chatClientButton);
+
+        JButton chatServerButton = new JButton("채팅 서버");
+        chatServerButton.setBounds(500, 10, 100, 30);
+        chatServerButton.addActionListener(this);
+        contentPane.add(chatServerButton);
 
         setVisible(true);
     }
@@ -86,14 +100,13 @@ public class Launcher extends JFrame implements ActionListener {
                 showTicTacToeOptions();
                 break;
             case "채팅":
-                JOptionPane.showMessageDialog(this, "채팅 클라이언트를 시작합니다.");
-                SwingUtilities.invokeLater(() -> {
-                    ChatClient chatClient = new ChatClient(settings.getNickname(), settings.getServerAddress());
-                    chatClient.setLauncher(this);
-                });
+                showChatClientDialog();
                 break;
             case "설정":
                 settings.setVisible(true);
+                break;
+            case "채팅 서버":
+                showChatServerDialog();
                 break;
             default:
                 break;
@@ -187,6 +200,67 @@ public class Launcher extends JFrame implements ActionListener {
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "유효한 포트 번호를 입력하세요.");
             }
+        }
+    }
+
+    private void showChatClientDialog() {
+        JTextField ipField = new JTextField(15);
+        JTextField portField = new JTextField(5);
+
+        JPanel panel = new JPanel(new GridLayout(2, 2));
+        panel.add(new JLabel("IP 주소:"));
+        panel.add(ipField);
+        panel.add(new JLabel("포트 번호:"));
+        panel.add(portField);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "서버 정보 입력", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            String ipAddress = ipField.getText();
+            int port;
+            try {
+                port = Integer.parseInt(portField.getText());
+                new Thread(() -> {
+                    new ChatClient(settings.getNickname(), ipAddress, port);
+                }).start();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "유효한 포트 번호를 입력하세요.");
+            }
+        }
+    }
+
+    private void showChatServerDialog() {
+        JTextField portField = new JTextField(5);
+
+        JPanel panel = new JPanel(new GridLayout(1, 2));
+        panel.add(new JLabel("포트 번호:"));
+        panel.add(portField);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "채팅 서버 포트 번호 입력", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            int port;
+            try {
+                port = Integer.parseInt(portField.getText());
+                new Thread(() -> {
+                    startChatServer(port);
+                }).start();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "유효한 포트 번호를 입력하세요.");
+            }
+        }
+    }
+
+    private void startChatServer(int port) {
+        try {
+            String ipAddress = InetAddress.getLocalHost().getHostAddress();
+            ChatServer.main(new String[]{String.valueOf(port)});
+            SwingUtilities.invokeLater(() -> {
+                chatServerInfoLabel.setText("채팅 서버 IP: " + ipAddress + ", 포트: " + port);
+            });
+        } catch (UnknownHostException e) {
+            JOptionPane.showMessageDialog(this, "IP 주소를 가져올 수 없습니다: " + e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "채팅 서버 시작 오류: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

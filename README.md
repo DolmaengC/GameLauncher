@@ -10,11 +10,11 @@ The goal of our program is to develop a game launcher that includes two classic 
 
 ## UML Diagram
 
-<link>
+[UML Diagram](doc/screenshot/UML_Diagram.png)
 
 ## User's guide
 
-<link & explanation>
+[User's Guide](doc/screenshot/user_guide.pdf)
 
 ## Environments
 

@@ -5,8 +5,10 @@ import edu.handong.csee.jh.chat.ChatServer;
 import edu.handong.csee.jh.game.Game2048;
 import edu.handong.csee.jh.game.Omok;
 import edu.handong.csee.jh.game.TicTacToe;
+import edu.handong.csee.jh.game.TicTacToeAI;
 import edu.handong.csee.jh.game.TicTacToeClient;
 import edu.handong.csee.jh.game.TicTacToeServer;
+import edu.handong.csee.jh.game.OmokAI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,6 +56,11 @@ public class Launcher extends JFrame implements ActionListener {
         oxButton.addActionListener(this);
         contentPane.add(oxButton);
 
+        JButton omokAIButton = new JButton("6목 AI");
+        omokAIButton.setBounds(100, 200, 100, 50);
+        omokAIButton.addActionListener(this);
+        contentPane.add(omokAIButton);
+
         JButton settingsButton = new JButton("설정");
         settingsButton.setBounds(300, 10, 80, 30);
         settingsButton.addActionListener(this);
@@ -87,17 +94,20 @@ public class Launcher extends JFrame implements ActionListener {
         switch (command) {
             case "오목":
                 JOptionPane.showMessageDialog(this, "오목 게임을 시작합니다.");
-                setVisible(false);
                 Omok game = new Omok(this);
                 game.setVisible(true);
                 break;
             case "2048":
                 JOptionPane.showMessageDialog(this, "2048 게임을 시작합니다.");
-                setVisible(false);
                 new Game2048(this);
                 break;
             case "Tic-Tac-Toe":
                 showTicTacToeOptions();
+                break;
+            case "6목 AI":
+                JOptionPane.showMessageDialog(this, "6목 AI 모드를 시작합니다.");
+                OmokAI gameAI = new OmokAI(this);
+                gameAI.setVisible(true);
                 break;
             case "채팅":
                 showChatClientDialog();
@@ -124,8 +134,18 @@ public class Launcher extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 dialog.dispose();
                 JOptionPane.showMessageDialog(Launcher.this, "TicTacToe 1인 플레이를 시작합니다.");
-                setVisible(false);
                 TicTacToe game = new TicTacToe(Launcher.this); // 1인 플레이 모드
+                game.setVisible(true);
+            }
+        });
+
+        JButton aiModeButton = new JButton("AI 모드");
+        aiModeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+                JOptionPane.showMessageDialog(Launcher.this, "TicTacToe AI 모드를 시작합니다.");
+                TicTacToeAI game = new TicTacToeAI(); // AI 모드
                 game.setVisible(true);
             }
         });
@@ -149,6 +169,7 @@ public class Launcher extends JFrame implements ActionListener {
         });
 
         dialog.add(singlePlayerButton);
+        dialog.add(aiModeButton);
         dialog.add(createRoomButton);
         dialog.add(joinRoomButton);
 

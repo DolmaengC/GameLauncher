@@ -64,23 +64,28 @@ public class TicTacToe extends JFrame {
     }
 
     private void drawBoard(Graphics g) {
-        g.setColor(Color.BLACK);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(2));
+        g2.setColor(Color.BLACK);
         for (int i = 0; i <= SIZE; i++) {
-            g.drawLine(i * CELL_SIZE, 0, i * CELL_SIZE, PANEL_SIZE);
-            g.drawLine(0, i * CELL_SIZE, PANEL_SIZE, i * CELL_SIZE);
+            g2.drawLine(i * CELL_SIZE, 0, i * CELL_SIZE, PANEL_SIZE);
+            g2.drawLine(0, i * CELL_SIZE, PANEL_SIZE, i * CELL_SIZE);
         }
     }
 
     private void drawMarks(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(2));
+
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
                 if (board[x][y] == 1) {
-                    g.setColor(Color.BLACK);
-                    g.drawLine(x * CELL_SIZE + 10, y * CELL_SIZE + 10, (x + 1) * CELL_SIZE - 10, (y + 1) * CELL_SIZE - 10);
-                    g.drawLine((x + 1) * CELL_SIZE - 10, y * CELL_SIZE + 10, x * CELL_SIZE + 10, (y + 1) * CELL_SIZE - 10);
+                    g2.setColor(Color.BLACK);
+                    g2.drawLine(x * CELL_SIZE + 10, y * CELL_SIZE + 10, (x + 1) * CELL_SIZE - 10, (y + 1) * CELL_SIZE - 10);
+                    g2.drawLine((x + 1) * CELL_SIZE - 10, y * CELL_SIZE + 10, x * CELL_SIZE + 10, (y + 1) * CELL_SIZE - 10);
                 } else if (board[x][y] == 2) {
-                    g.setColor(Color.BLACK);
-                    g.drawOval(x * CELL_SIZE + 10, y * CELL_SIZE + 10, CELL_SIZE - 20, CELL_SIZE - 20);
+                    g2.setColor(Color.BLACK);
+                    g2.drawOval(x * CELL_SIZE + 10, y * CELL_SIZE + 10, CELL_SIZE - 20, CELL_SIZE - 20);
                 }
             }
         }

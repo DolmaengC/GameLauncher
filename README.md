@@ -10,7 +10,7 @@ The goal of our program is to develop a game launcher that includes two classic 
 
 ## UML Diagram
 
-![UML Diagram](doc/screenshot/UML_Diagram.png)
+![UML Diagram](doc/screenshot/JHGameLauncher_UML_Diagram.png)
 
 ## User's guide
 

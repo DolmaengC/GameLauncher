@@ -31,7 +31,7 @@ then you can see the launcher.
 
 ## User's guide
 
-[User's Guide](doc/JHGameLauncher Report.pdf)
+[User's Guide](doc/JHGameLauncher_Report.pdf)
 
 
 
